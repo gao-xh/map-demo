@@ -318,6 +318,7 @@ refs: $data_handover
 EOF
 transfer=$(send "$work/fit-transfer.md")
 sed -i.bak 's/^- State: .*/- State: transferring to Codex, laptop/' "$work/status-fit.md"
+rm "$work/status-fit.md.bak"
 quiet map status fit "$work/status-fit.md"
 say "sent $transfer"
 
