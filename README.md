@@ -15,9 +15,17 @@ installing numpy and scipy once).
 
 [![The message lanes of a real run: lead, data (Codex), fit (Claude Code), review (Codex), release (Claude Code) and the main branch](docs/images/real-run.png)](docs/runs/2026-10-29-real-agents.mp4)
 
-A real run with Claude Code and Codex, as a 75-second video (click the picture;
-[Chinese version](docs/runs/2026-10-29-real-agents-zh.mp4)). Every
-arrow is a message on the coordination branch, in the sender's color.
+A real run with Claude Code and Codex, as a 75-second video. Every arrow is a message on
+the coordination branch, in the sender's color.
+
+https://github.com/user-attachments/assets/3dd7fc8b-3a6b-4d9c-9ed3-26bc05d11cc6
+
+<details>
+<summary>Chinese version (中文版)</summary>
+
+https://github.com/user-attachments/assets/a0283c93-604e-49ec-8a53-b35d3cb21e5f
+
+</details>
 
 ## The story
 
