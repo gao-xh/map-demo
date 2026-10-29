@@ -345,16 +345,19 @@ fit_tests=$(tests)
 git push --quiet origin fit/decay
 fit_sha=$(git rev-parse HEAD)
 for message in "$to_fit" "$data_handover" "$transfer"; do quiet map mark-read fit "$message"; done
+status fit line fit/decay "decay-fit: fit/decay at $fit_sha, ready for review" "src/decay_fit/fit.py, src/decay_fit/cli.py, tests/test_fit.py" "in review" "Codex" "laptop; macOS"
 say "tests: $fit_tests"
 say "pushed fit/decay at $fit_sha"
 run uv run --quiet --locked decay-fit data/sample
 
 # ---------------------------------------------------------------------------
-step "An agent that did not build it reviews that exact commit"
+step "The lead asks an agent that did not build it to review that exact commit"
 at "2026-11-02T11:00:00Z"
+in_session lead
+run map status fit
 cat > "$work/review-request.md" <<EOF
 type: handover
-from: fit
+from: lead
 to: review
 refs: $transfer
 
@@ -387,7 +390,7 @@ review_tests=$(tests)
 cat > "$work/review.md" <<EOF
 type: review
 from: review
-to: fit
+to: lead, fit
 refs: $review_request
 
 Reviewed: fit/decay at $fit_sha
@@ -457,7 +460,7 @@ main_sha=$(git rev-parse HEAD)
 cat > "$work/released.md" <<EOF
 type: released
 from: release
-to: fit, all
+to: fit, lead, all
 refs: $release_request
 
 - Production: $main_sha (no deployment in this project)

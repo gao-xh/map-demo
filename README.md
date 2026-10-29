@@ -25,9 +25,9 @@ it is installing numpy and scipy once per session).
 | 6 | fit (Claude Code) | claims the fit and starts on data's commit |
 | 7 | fit | runs out of context: pushes a WIP commit and leaves a `transfer` handover |
 | 8 | fit (Codex, another machine) | reads the transfer, checks the branch SHA, finishes the fit and its tests |
-| 9 | review | an agent that did not build it reviews that exact commit |
+| 9 | lead, review | the lead asks an agent that did not build it to review that exact commit; the review goes back to the lead and fit |
 | 10 | fit | asks for the release |
-| 11 | release | reruns the tests on that commit, then fast-forwards `main` |
+| 11 | release | reruns the tests on that commit, fast-forwards `main` and reports `released` to fit and the lead |
 | 12 | lead | `doctor.sh` checks the coordination branch: 0 errors, 0 warnings |
 
 The agents are simulated: every action is a fixed shell command in
