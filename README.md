@@ -62,6 +62,16 @@ and no network), so run it only in a throwaway
 directory. Each agent's output is kept in `<work>/logs/`. The release session does not tag:
 the tag waits for the owner, as `AGENTS.md` says.
 
+### A timeline of a run
+
+```sh
+uv run python demo/timeline.py <work directory>     # writes <work directory>/timeline.html
+```
+
+One self-contained HTML page (light and dark) with every message, claim, status change and
+commit of the run in order, with the agent tool of each line and the full text of each
+message. Commits the replay made on its fixed clock are listed first and marked.
+
 ## The example project
 
 `decay-fit` fits exponential decay times, with one-sigma uncertainties, to measurement runs:

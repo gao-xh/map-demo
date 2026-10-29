@@ -70,6 +70,8 @@ refused() {  # refused <command>: run a command that should fail, and show its e
     fi
 }
 at() {     # at <ISO time>: the clock for the commits that follow
+    # A setup for real agents keeps the real clock, so its timeline reads in order
+    [ "$setup_only" -eq 1 ] && return 0
     export GIT_AUTHOR_DATE="$1" GIT_COMMITTER_DATE="$1"
 }
 session() {  # session <line> [<directory name>]: clone the project as that line
@@ -152,8 +154,8 @@ session lead
 in_session lead
 quiet "$map_dir/scripts/install.sh" "$work/lead"
 # install.sh records the install time; use the replay's clock so the commit is reproducible
-sed -i.bak "s/^Installed: .*/Installed: $GIT_COMMITTER_DATE/" tools/multi-agent-protocol/VERSION
-rm tools/multi-agent-protocol/VERSION.bak
+[ "$setup_only" -eq 1 ] || sed -i.bak "s/^Installed: .*/Installed: $GIT_COMMITTER_DATE/" tools/multi-agent-protocol/VERSION
+rm -f tools/multi-agent-protocol/VERSION.bak
 cp "$demo_root/demo/files/AGENTS.md" AGENTS.md
 git add -A
 git commit --quiet -m "chore: adopt the Multi-Agent Protocol"
