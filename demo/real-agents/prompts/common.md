@@ -18,6 +18,7 @@ directory. The team follows the Multi-Agent Protocol (MAP).
 - Keep your status file current with status.sh (fill in the Environment section honestly:
   your agent tool and model, machine label "mac", what you can run).
 - After you have acted on a message, advance Last-read with mark-read.sh.
-- Write every file, commit message and coordination message in English.
+- Write every file, commit message and coordination message in English, and print your
+  final summary in English too (this demo is shown to English readers).
 - Be brief. When you are done, print a short summary: what you did, the commit SHAs, the
   checks you ran and their results, and the messages you sent.
