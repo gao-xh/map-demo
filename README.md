@@ -21,16 +21,16 @@ installing numpy and scipy once).
 | 2 | lead (Claude Code) | installs MAP, writes the role table into `AGENTS.md`, creates the `coordination` branch |
 | 3 | lead | hands the loader to line `data` and the fit to line `fit` |
 | 4 | data (Codex) | claims the task, builds `load_runs`, runs its tests, pushes `data/loader` |
-| 5 | data | hands the loader to `fit` with the exact commit and the tests it ran |
-| 5b | fit | starts early and tries data's task: the claim is refused (exit 1) |
-| 6 | fit (Claude Code) | claims the fit and starts on data's commit |
-| 7 | fit | runs out of context: pushes a WIP commit and leaves a `transfer` handover |
-| 8 | fit (Codex, another machine) | reads the transfer, checks the branch SHA, finishes the fit and its tests |
-| 9 | lead, review | the lead asks an agent that did not build it to review that exact commit; the review goes back to the lead and fit |
-| 10 | fit | asks for the release |
-| 11 | release | reruns the tests on that commit, fast-forwards `main` and reports `released` to fit and the lead |
-| 12 | release, you | the tag waits for you: release asks, you answer (`--pause` lets you type it), release records it with `decide.sh` and tags `v0.1.0` |
-| 13 | lead | `doctor.sh` checks the coordination branch: 0 errors, 0 warnings |
+| 5 | fit | starts early and tries data's task: the claim is refused (exit 1) |
+| 6 | data | hands the loader to `fit` with the exact commit and the tests it ran |
+| 7 | fit (Claude Code) | claims the fit and starts on data's commit |
+| 8 | fit | runs out of context: pushes a WIP commit and leaves a `transfer` handover |
+| 9 | fit (Codex, another machine) | reads the transfer, checks the branch SHA, finishes the fit and its tests |
+| 10 | lead, review | the lead asks an agent that did not build it to review that exact commit; the review goes back to the lead and fit |
+| 11 | fit | asks for the release |
+| 12 | release | reruns the tests on that commit, fast-forwards `main` and reports `released` to fit and the lead |
+| 13 | release, you | the tag waits for you: release asks, you answer (`--pause` lets you type it), release records it with `decide.sh` and tags `v0.1.0` |
+| 14 | lead | `doctor.sh` checks the coordination branch: 0 errors, 0 warnings |
 
 The agents are simulated: every action is a fixed shell command in
 [`demo/replay.sh`](demo/replay.sh), so the run is the same every time. The commits on the
@@ -55,7 +55,7 @@ each session once, unattended, in its own clone, with the prompts in
 demo/real-agents/run.sh        # needs claude and codex, logged in; uses model credits
 ```
 
-Every run differs, takes tens of minutes, and spends model usage. The agents run with
+Every run differs, takes about 10 to 15 minutes, and spends model usage. The agents run with
 their tools allowed inside the work directory (Claude Code: file tools plus only `git`, the MAP
 scripts and `uv run --locked`; Codex: `workspace-write` with the clone's `.git` writable
 and no network), so run it only in a throwaway
