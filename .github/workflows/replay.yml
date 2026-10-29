@@ -1,0 +1,22 @@
+name: replay
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  replay:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Replay the demo
+        run: demo/replay.sh "$RUNNER_TEMP/run" | tee "$RUNNER_TEMP/replay.log"
+      - name: Check that it is reproducible
+        run: |
+          grep -q "0 errors, 0 warnings" "$RUNNER_TEMP/replay.log"
+          # The development commits get the same SHAs on every machine (README of MAP 2.1 quotes the first)
+          grep -q "data/loader  6bb4ab2c1681e262d600d7e4afa1ba7aceb94886" "$RUNNER_TEMP/replay.log"
+          grep -q "fit/decay    08651d4305da0f69a5d5a65852df33f8dedc2c1d" "$RUNNER_TEMP/replay.log"

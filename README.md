@@ -13,6 +13,11 @@ demo/replay.sh            # add --pause to stop after each step
 It needs `git` and [uv](https://docs.astral.sh/uv/), and takes about a minute (most of it is
 installing numpy and scipy once).
 
+[![The message lanes of a real run: lead, data (Codex), fit (Claude Code), review (Codex), release (Claude Code) and the main branch](docs/images/real-run.png)](docs/runs/2026-10-29-real-agents.mp4)
+
+A real run with Claude Code and Codex, as a 75-second video (click the picture). Every
+arrow is a message on the coordination branch, in the sender's color.
+
 ## The story
 
 | Step | Session | What happens |
@@ -66,7 +71,11 @@ the tag waits for the owner, as `AGENTS.md` says.
 
 [`docs/runs/2026-10-29-real-agents.html`](docs/runs/2026-10-29-real-agents.html) is the
 timeline of one real run (about 11 minutes, no human input; download it and open it in a
-browser). Codex, as the reviewer, found that Claude Code's fit failed when the time axis
+browser), [`docs/runs/2026-10-29-real-agents.mp4`](docs/runs/2026-10-29-real-agents.mp4)
+the same run as a short video, and
+[`docs/runs/2026-10-29-real-agents.bundle`](docs/runs/2026-10-29-real-agents.bundle) its
+shared remote as a git bundle, with every message and commit
+(`git clone --mirror docs/runs/2026-10-29-real-agents.bundle run.git`). Codex, as the reviewer, found that Claude Code's fit failed when the time axis
 did not start at zero (P2); Claude Code fixed it, Codex approved the new commit, and the
 release session fast-forwarded `main` and stopped before the tag, which waits for the
 owner.
@@ -103,7 +112,9 @@ The sample runs are synthetic, written by `scripts/make_sample_data.py` with a f
 ## Files
 
 - `demo/replay.sh`: the replay; `--map DIR` uses a local MAP checkout instead of cloning
-  the public repository at `v2.0.0` (`MAP_TAG`)
+  the public repository at `v2.0.0` (`MAP_TAG`). The demo stays on MAP 2.0.0 on purpose:
+  the replay installs MAP into the project, so another version changes the commit SHAs
+  that the MAP README quotes. The parts of the protocol the demo shows are the same in 2.1.
 - `demo/files/AGENTS.md`: the rules the lead writes, with the role table
 - `demo/files/project-README.md`: the README of the replayed project
 - `src/`, `tests/`, `data/sample/`, `scripts/`: the finished example project, which the
