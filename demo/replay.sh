@@ -5,6 +5,8 @@
 #   --map DIR  use this checkout of multi-agent-protocol instead of cloning the public
 #              repository at the tag in MAP_TAG (default v2.0.0)
 #   --pause    wait for Enter after each step (for recordings and live demos)
+#   --setup-only  stop after the lead has handed out the work (step 3), with one clone
+#              per session and an env.sh to source; used by demo/real-agents/run.sh
 #   WORKDIR    empty or new directory for the run (default: a new temporary directory)
 #
 # Every agent action is a fixed shell command, so a run is reproducible: the commits on the
@@ -21,11 +23,13 @@ MAP_URL=${MAP_URL:-https://github.com/gao-xh/multi-agent-protocol}
 demo_root=$(cd "$(dirname "$0")/.." && pwd)
 map_dir=""
 pause=0
+setup_only=0
 while [ $# -gt 0 ]; do
     case $1 in
         --map) map_dir=$(cd "$2" && pwd); shift 2 ;;
         --pause) pause=1; shift ;;
-        -h|--help) sed -n '2,17p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        --setup-only) setup_only=1; shift ;;
+        -h|--help) sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
         -*) echo "replay.sh: unknown option $1" >&2; exit 2 ;;
         *) break ;;
     esac
@@ -42,6 +46,8 @@ export GIT_CONFIG_GLOBAL="$work/gitconfig"
 git config --file "$GIT_CONFIG_GLOBAL" init.defaultBranch main
 git config --file "$GIT_CONFIG_GLOBAL" advice.detachedHead false
 export MAP_UPDATE_SECONDS=0   # no release-check network call from the scripts
+# One Python environment for every session, so numpy and scipy install once
+export UV_PROJECT_ENVIRONMENT="$work/venv"
 
 step_number=0
 step() {   # step <title>: print a step heading, and pause when asked
@@ -54,6 +60,15 @@ quiet() {    # quiet <command>: run it, and show its output only when it fails
 }
 say() { printf '   %s\n' "$*"; }
 run() { printf '   $ %s\n' "$*"; "$@" 2>&1 | sed 's/^/     /'; }
+refused() {  # refused <command>: run a command that should fail, and show its exit status
+    printf '   $ %s\n' "$*"
+    if "$@" > "$work/last-command.log" 2>&1; then
+        sed 's/^/     /' "$work/last-command.log"; say "expected a refusal, got exit 0"; exit 1
+    else
+        status_code=$?
+        sed 's/^/     /' "$work/last-command.log"; say "(exit $status_code)"
+    fi
+}
 at() {     # at <ISO time>: the clock for the commits that follow
     export GIT_AUTHOR_DATE="$1" GIT_COMMITTER_DATE="$1"
 }
@@ -208,6 +223,27 @@ to_fit=$(send "$work/to-fit.md")
 say "sent $to_data"
 say "sent $to_fit"
 
+if [ "$setup_only" -eq 1 ]; then
+    in_session lead
+    quiet uv sync --quiet --locked   # fill the shared environment while the network is on
+    for line in data fit review release; do session "$line"; done
+    cat > "$work/env.sh" <<EOF
+# Source this before running an agent in one of the session clones.
+export GIT_CONFIG_NOSYSTEM=1
+export GIT_CONFIG_GLOBAL="$work/gitconfig"
+export MAP_UPDATE_SECONDS=0
+export UV_PROJECT_ENVIRONMENT="$work/venv"
+EOF
+    cat <<EOF
+
+Set up. The lead has handed out the work; nothing is built yet.
+  origin.git                      the shared remote
+  lead/ data/ fit/ review/ release/   one clone per session, each with its git identity
+  env.sh                          source it before starting an agent in a clone
+EOF
+    exit 0
+fi
+
 # ---------------------------------------------------------------------------
 step "Line data (Codex) joins, claims the task and builds the loader"
 at "2026-11-02T09:20:00Z"
@@ -229,7 +265,16 @@ say "tests: $data_tests"
 say "pushed data/loader at $data_sha"
 
 # ---------------------------------------------------------------------------
+step "Line fit starts early and tries the same task: the claim is refused"
+at "2026-11-02T09:40:00Z"
+session fit
+in_session fit
+refused map claim --branch fit/decay fit load-runs
+say "fit waits for data's handover instead of building a second loader"
+
+# ---------------------------------------------------------------------------
 step "Line data hands the loader to line fit, with the exact commit and the tests it ran"
+in_session data
 cat > "$work/data-to-fit.md" <<EOF
 type: handover
 from: data
@@ -266,7 +311,6 @@ show "$data_handover"
 # ---------------------------------------------------------------------------
 step "Line fit (Claude Code) joins, claims the fit and starts on data's commit"
 at "2026-11-02T10:00:00Z"
-session fit
 in_session fit
 status fit line fit/decay "decay-fit: the decay fit (handovers from lead and data)" "src/decay_fit/fit.py, src/decay_fit/cli.py, tests/test_fit.py" building "Claude Code" "mac; macOS"
 run map inbox fit
@@ -431,7 +475,7 @@ refs: $review
 - Migrations: none
 - Configuration, secrets or scheduled-job changes: none
 - Reviews: $review reviewed $fit_sha (no P1 or P2)
-- Owner approvals: standing authorization of 2026-11-02 in AGENTS.md (release merges when the tests pass)
+- Owner approvals: none needed to merge into main; the release tag v0.1.0 needs the owner (AGENTS.md)
 - What it changes: loader for measurement runs; decay fit with uncertainties; decay-fit command
 - Interfaces changed: none (new modules only)
 - Checks run: uv run --locked pytest -q: $fit_tests
@@ -457,6 +501,35 @@ git switch --quiet main
 git merge --quiet --ff-only "$fit_sha"
 git push --quiet origin main
 main_sha=$(git rev-parse HEAD)
+say "main is at $main_sha"
+
+# ---------------------------------------------------------------------------
+step "The tag needs you: release asks, you answer in its session, release records it"
+at "2026-11-02T11:40:00Z"
+say "release: May I tag main at $main_sha as v0.1.0? The checks passed on that commit."
+if [ "$pause" -eq 1 ]; then
+    printf '   You (y/N): '; read -r owner_answer
+else
+    owner_answer=y; say "You: y (answered by the replay; run with --pause to answer yourself)"
+fi
+case $owner_answer in y|Y|yes) ;; *) say "no approval: release stops here, main stays untagged"; exit 0 ;; esac
+cat > "$work/decision-tag.md" <<EOF
+# Tag v0.1.0
+
+Date: 2026-11-02. Given directly in the release session.
+
+The owner approved the release tag, in these words: "y" (answer to: "May I tag main at
+$main_sha as v0.1.0?").
+
+Approved: main at $main_sha
+
+Scope: the annotated tag v0.1.0 on that commit. Exclusions: any other tag or commit.
+EOF
+decision=$(map decide owner-tag-v0.1.0 "$work/decision-tag.md" 2>&1 | sed -n 's/.*\(decisions\/[^ ]*\.md\).*/\1/p' | head -n 1)
+say "recorded ${decision:-the decision}"
+git tag -a v0.1.0 -m "decay-fit 0.1.0" "$main_sha"
+git push --quiet origin v0.1.0
+run git tag -n1 v0.1.0
 cat > "$work/released.md" <<EOF
 type: released
 from: release
@@ -465,6 +538,7 @@ refs: $release_request
 
 - Production: $main_sha (no deployment in this project)
 - Main branch: $main_sha
+- Tag: v0.1.0 (owner approval: ${decision:-decisions/})
 - Went live: loader, decay fit, decay-fit command
 - Migrations: none
 - Checks: uv run --locked pytest -q on $fit_sha: $release_tests
@@ -475,7 +549,6 @@ EOF
 released=$(send "$work/released.md")
 quiet map mark-read release "$release_request"
 run map release-claim release release-main
-say "main is at $main_sha"
 say "sent $released"
 
 # ---------------------------------------------------------------------------
@@ -492,6 +565,7 @@ cat <<EOF
 Done. Everything is in $work:
   origin.git    the shared remote (main, data/loader, fit/decay, coordination)
   lead/ data/ fit/ fit-laptop/ review/ release/   one clone per session
+  venv/         the Python environment all sessions share
 Commits:
   data/loader  $data_sha
   fit/decay    $fit_sha

@@ -92,15 +92,13 @@ None.
 
 #### Extra actions that need the owner's approval (added to PROTOCOL.md 3.2)
 
-- none
+- creating a release tag
 
 ### Standing authorizations
 
 Granted by the owner; read narrowly (PROTOCOL.md 3.3). Anything else needs fresh approval.
 
-| Date | Granted to | Scope | Exclusions | Owner's words |
-| --- | --- | --- | --- | --- |
-| 2026-11-02 | release | merge into main after the checks pass on the exact commit | tags, publishing, force-push | "release can merge when the tests pass" |
+None.
 
 ### Project specifics
 
