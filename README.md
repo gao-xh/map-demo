@@ -10,8 +10,8 @@ cd map-demo
 demo/replay.sh            # add --pause to stop after each step
 ```
 
-It needs `git` and [uv](https://docs.astral.sh/uv/), and takes about three minutes (most of
-it is installing numpy and scipy once per session).
+It needs `git` and [uv](https://docs.astral.sh/uv/), and takes about a minute (most of it is
+installing numpy and scipy once).
 
 ## The story
 
@@ -22,13 +22,15 @@ it is installing numpy and scipy once per session).
 | 3 | lead | hands the loader to line `data` and the fit to line `fit` |
 | 4 | data (Codex) | claims the task, builds `load_runs`, runs its tests, pushes `data/loader` |
 | 5 | data | hands the loader to `fit` with the exact commit and the tests it ran |
+| 5b | fit | starts early and tries data's task: the claim is refused (exit 1) |
 | 6 | fit (Claude Code) | claims the fit and starts on data's commit |
 | 7 | fit | runs out of context: pushes a WIP commit and leaves a `transfer` handover |
 | 8 | fit (Codex, another machine) | reads the transfer, checks the branch SHA, finishes the fit and its tests |
 | 9 | lead, review | the lead asks an agent that did not build it to review that exact commit; the review goes back to the lead and fit |
 | 10 | fit | asks for the release |
 | 11 | release | reruns the tests on that commit, fast-forwards `main` and reports `released` to fit and the lead |
-| 12 | lead | `doctor.sh` checks the coordination branch: 0 errors, 0 warnings |
+| 12 | release, you | the tag waits for you: release asks, you answer (`--pause` lets you type it), release records it with `decide.sh` and tags `v0.1.0` |
+| 13 | lead | `doctor.sh` checks the coordination branch: 0 errors, 0 warnings |
 
 The agents are simulated: every action is a fixed shell command in
 [`demo/replay.sh`](demo/replay.sh), so the run is the same every time. The commits on the
@@ -40,6 +42,24 @@ After a run, everything stays in the work directory the script prints: the share
 `origin.git` and one clone per session (`lead/`, `data/`, `fit/`, `fit-laptop/`,
 `review/`, `release/`). Read the messages with
 `git -C <work>/lead show origin/coordination:messages/<name>`.
+
+## With real agents
+
+`demo/real-agents/run.sh` tells the same story with real sessions instead of fixed
+commands: Codex as line `data` and as the reviewer, Claude Code as line `fit`, the lead and
+the release role. It sets up the project with `demo/replay.sh --setup-only`, then starts
+each session once, unattended, in its own clone, with the prompts in
+`demo/real-agents/prompts/`; each one reads its inbox and acts on its own.
+
+```sh
+demo/real-agents/run.sh        # needs claude and codex, logged in; uses model credits
+```
+
+Every run differs, takes tens of minutes, and spends model usage. The agents run with
+their tools allowed inside the work directory (Claude Code: `acceptEdits` with Bash; Codex:
+`workspace-write` with the clone's `.git` writable), so run it only in a throwaway
+directory. Each agent's output is kept in `<work>/logs/`. The release session does not tag:
+the tag waits for the owner, as `AGENTS.md` says.
 
 ## The example project
 

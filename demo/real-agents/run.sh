@@ -1,0 +1,63 @@
+#!/bin/sh
+# Run the decay-fit story with real agents: Codex and Claude Code sessions, started one
+# after another, each in its own clone, each reading its inbox and acting on its own.
+#
+# Usage: demo/real-agents/run.sh [WORKDIR]
+#   CLAUDE  Claude Code command (default: claude, or ~/.local/bin/claude)
+#   CODEX   Codex command (default: codex, or the one inside the ChatGPT app on macOS)
+#
+# Unlike demo/replay.sh, the agents write the code and the messages themselves, so every
+# run differs and costs model usage. Each agent's output is kept in WORKDIR/logs/.
+set -eu
+
+here=$(cd "$(dirname "$0")" && pwd)
+work=${1:-$(mktemp -d "${TMPDIR:-/tmp}/map-real.XXXXXX")}
+
+find_command() {  # find_command <name> <fallback path>: print a usable command or nothing
+    if command -v "$1" >/dev/null 2>&1; then command -v "$1"; elif [ -x "$2" ]; then printf '%s\n' "$2"; fi
+}
+CLAUDE=${CLAUDE:-$(find_command claude "$HOME/.local/bin/claude")}
+CODEX=${CODEX:-$(find_command codex "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex")}
+[ -n "$CLAUDE" ] || { echo "run.sh: Claude Code not found; set CLAUDE" >&2; exit 2; }
+[ -n "$CODEX" ] || { echo "run.sh: Codex not found; set CODEX" >&2; exit 2; }
+
+"$here/../replay.sh" --setup-only "$work"
+# shellcheck disable=SC1091
+. "$work/env.sh"
+mkdir -p "$work/logs"
+
+turn=0
+agent() {  # agent <claude|codex> <clone> <prompt file>: one unattended session
+    turn=$((turn + 1))
+    log="$work/logs/$turn-$2-$1.log"
+    prompt=$(cat "$here/prompts/common.md"; printf '\n'; cat "$here/prompts/$3")
+    printf '\n\033[1m== %d. %s in %s/ (%s)\033[0m\n' "$turn" "$1" "$2" "$3"
+    cd "$work/$2"
+    case $1 in
+        claude) "$CLAUDE" -p "$prompt" --permission-mode acceptEdits \
+                    --allowedTools "Bash,Read,Edit,Write,Glob,Grep" > "$log" 2>&1 ;;
+        # workspace-write keeps .git read-only; make this clone's .git writable
+        # (adapters/codex.md in MAP). The remote is a local directory, so no network.
+        codex) "$CODEX" exec -C "$work/$2" -s workspace-write --add-dir "$work" \
+                    -c "sandbox_workspace_write.writable_roots=[\"$work/$2/.git\"]" \
+                    --ephemeral -o "$log.last" "$prompt" > "$log" 2>&1
+               cat "$log.last" >> "$log" 2>/dev/null || true ;;
+    esac || echo "   (the agent exited with status $?; see $log)"
+    tail -n 25 "$log" | sed 's/^/   /'
+}
+
+agent codex data data.md
+agent claude fit fit.md
+agent claude lead lead.md
+agent codex review review.md
+agent claude fit fit-release.md
+agent claude release release.md
+
+cd "$work/lead"
+git fetch --quiet origin
+printf '\n\033[1m== Result\033[0m\n'
+echo "   main:"; git log --oneline --format='     %h %an: %s' origin/main
+echo "   messages:"; git ls-tree --name-only origin/coordination messages/ | grep -v gitkeep | sed 's/^/     /'
+./tools/multi-agent-protocol/scripts/doctor.sh 2>&1 | sed 's/^/   /' || true
+echo
+echo "Work directory: $work (agent output in logs/)"

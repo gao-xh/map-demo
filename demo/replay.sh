@@ -225,7 +225,9 @@ say "sent $to_fit"
 
 if [ "$setup_only" -eq 1 ]; then
     in_session lead
-    quiet uv sync --quiet --locked   # fill the shared environment while the network is on
+    # Fill the shared environment and a cache inside the work directory while the network
+    # is on, so that sandboxed agents can run the tests offline
+    UV_CACHE_DIR="$work/uv-cache" quiet uv sync --quiet --locked
     for line in data fit review release; do session "$line"; done
     cat > "$work/env.sh" <<EOF
 # Source this before running an agent in one of the session clones.
@@ -233,6 +235,8 @@ export GIT_CONFIG_NOSYSTEM=1
 export GIT_CONFIG_GLOBAL="$work/gitconfig"
 export MAP_UPDATE_SECONDS=0
 export UV_PROJECT_ENVIRONMENT="$work/venv"
+export UV_CACHE_DIR="$work/uv-cache"
+export UV_OFFLINE=1
 EOF
     cat <<EOF
 
