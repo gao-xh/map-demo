@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0
       - name: Replay the demo
         run: demo/replay.sh "$RUNNER_TEMP/run" | tee "$RUNNER_TEMP/replay.log"
       - name: Check that it is reproducible
