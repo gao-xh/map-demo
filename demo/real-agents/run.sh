@@ -44,8 +44,7 @@ agent() {  # agent <claude|codex> <clone> <prompt file>: one unattended session
         # (adapters/codex.md in MAP). The remote is a local directory, so no network.
         codex) "$CODEX" exec -C "$work/$2" -s workspace-write --add-dir "$work" \
                     -c "sandbox_workspace_write.writable_roots=[\"$work/$2/.git\"]" \
-                    --ephemeral -o "$log.last" "$prompt" > "$log" 2>&1
-               cat "$log.last" >> "$log" 2>/dev/null || true ;;
+                    --ephemeral -o "$log.last" "$prompt" > "$log" 2>&1 ;;
     esac || echo "   (the agent exited with status $?; see $log)"
     tail -n 25 "$log" | sed 's/^/   /'
 }
@@ -54,8 +53,23 @@ agent codex data data.md
 agent claude fit fit.md
 agent claude lead lead.md
 agent codex review review.md
-agent claude fit fit-release.md
-agent claude release release.md
+
+# Review loop: fit either asks for the release or fixes the findings and asks for a new
+# review, which the lead arranges. At most three reviews in all.
+release_requested() {
+    git -C "$work/lead" fetch --quiet origin coordination
+    git -C "$work/lead" ls-tree --name-only origin/coordination messages/ | grep -q '_release-request\.md$'
+}
+round=1
+while :; do
+    agent claude fit fit-release.md
+    release_requested && break
+    [ "$round" -lt 3 ] || { echo "   no release-request after $round reviews; stopping before release"; break; }
+    round=$((round + 1))
+    agent claude lead lead.md
+    agent codex review review.md
+done
+release_requested && agent claude release release.md
 
 cd "$work/lead"
 git fetch --quiet origin
