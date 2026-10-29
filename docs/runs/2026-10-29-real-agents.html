@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAP run timeline</title>
+<style>
+:root { --bg:#ffffff; --text:#1f2328; --muted:#59636e; --line:#d0d7de; --card:#f6f8fa;
+  --message:#0969da; --commit:#1a7f37; --claim:#9a6700; --status:#8250df; --decision:#cf222e; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --text:#e6edf3; --muted:#9198a1;
+  --line:#3d444d; --card:#151b23; --message:#4493f8; --commit:#3fb950; --claim:#d29922;
+  --status:#ab7df8; --decision:#f85149; } }
+body { background:var(--bg); color:var(--text); margin:0 auto; max-width:900px; padding:24px 16px;
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+h1 { font-size:22px; margin:0 0 4px; } .sub { color:var(--muted); margin:0 0 16px; }
+ul.summary { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 12px 12px 32px; }
+ol { list-style:none; padding:0; margin:24px 0; }
+.event { display:grid; grid-template-columns:72px 1fr; gap:12px; padding:10px 0; border-top:1px solid var(--line); }
+.when { color:var(--muted); font:13px ui-monospace,SFMono-Regular,Menlo,monospace; padding-top:2px; }
+.actor { font-weight:600; } .tool { color:var(--muted); font-size:13px; margin-left:4px; }
+.kind { font-size:12px; border-radius:10px; padding:1px 8px; margin:0 6px; color:#fff; }
+.message .kind { background:var(--message); } .commit .kind { background:var(--commit); }
+.claim .kind { background:var(--claim); } .status .kind { background:var(--status); }
+.decision .kind { background:var(--decision); }
+.meta, .note { color:var(--muted); font-size:13px; }
+.meta { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+details summary { cursor:pointer; color:var(--muted); font-size:13px; }
+pre { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:10px;
+  overflow-x:auto; font-size:12.5px; white-space:pre-wrap; }
+</style></head><body>
+<h1>MAP run timeline</h1>
+<p class="sub">map-real.RQmmBa: every message, claim, status change and commit, in order.
+Times are UTC.</p>
+<ul class="summary"><li>Agents: data (Codex; version unknown), fit (Claude Code; version unknown), lead (Claude Code; version unknown), release (Claude Code; version unknown), review (Codex; version unknown)</li><li>17 messages, 6 commits</li><li>main: c133fba fit: fix: fit decay on times relative to the first point</li><li>Tags: none (a tag waits for the owner)</li><li>From first to last event: 11 minutes</li></ul>
+<ol>
+<li class="event commit">
+  <div class="when">03:47:08</div>
+  <div class="what">
+    <div><span class="actor">owner</span>
+      
+      <span class="kind">commit</span> chore: start the decay-fit project</div>
+    <div class="meta">1ee4017 · data/load-runs, fit/decay-fit, main</div>
+    <details><summary>show</summary><pre>
+.gitignore
+.python-version
+README.md
+data/sample/run-01.csv
+data/sample/run-02.csv
+data/sample/run-03.csv
+pyproject.toml
+scripts/make_sample_data.py
+src/decay_fit/__init__.py
+uv.lock</pre></details>
+  </div>
+</li>
+<li class="event commit">
+  <div class="when">03:47:09</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">commit</span> chore: adopt the Multi-Agent Protocol</div>
+    <div class="meta">6b4531b · data/load-runs, fit/decay-fit, main</div>
+    <details><summary>show</summary><pre>
+AGENTS.md
+tools/multi-agent-protocol/.gitattributes
+tools/multi-agent-protocol/AGENTS.md.snippet
+tools/multi-agent-protocol/LICENSE
+tools/multi-agent-protocol/PROTOCOL.md
+tools/multi-agent-protocol/VERSION
+tools/multi-agent-protocol/adapters/BOOTSTRAP.md
+tools/multi-agent-protocol/adapters/CHANGE.md
+tools/multi-agent-protocol/adapters/JOIN.md
+tools/multi-agent-protocol/adapters/README.md
+tools/multi-agent-protocol/adapters/aider.md
+tools/multi-agent-protocol/adapters/codex.md
+tools/multi-agent-protocol/adapters/compact-rules.md
+tools/multi-agent-protocol/adapters/copilot.md
+tools/multi-agent-protocol/adapters/cursor.md
+tools/multi-agent-protocol/adapters/gemini.md
+tools/multi-agent-protocol/adapters/modes.md
+tools/multi-agent-protocol/adapters/opencode.md
+tools/multi-agent-protocol/adapters/platforms.md
+tools/multi-agent-protocol/adapters/remote.md
+tools/multi-agent-protocol/scripts/claim.sh
+tools/multi-agent-protocol/scripts/decide.sh
+tools/multi-agent-protocol/scripts/doctor.sh
+tools/multi-agent-protocol/scripts/inbox.sh
+tools/multi-agent-protocol/scripts/init-coordination.sh
+tools/multi-agent-protocol/scripts/install.sh
+tools/multi-agent-protocol/scripts/lib.sh
+tools/multi-agent-protocol/scripts/mark-read.sh
+tools/multi-agent-protocol/scripts/release-claim.sh
+tools/multi-agent-protocol/scripts/remote.sh
+tools/multi-agent-protocol/scripts/runner.sh
+tools/multi-agent-protocol/scripts/send.sh
+tools/multi-agent-protocol/scripts/session-start.sh
+tools/multi-agent-protocol/scripts/set-line.sh
+tools/multi-agent-protocol/scripts/status.sh
+tools/multi-agent-protocol/scripts/upgrade.sh
+tools/multi-agent-protocol/scripts/verify.sh
+tools/multi-agent-protocol/scripts/watch.sh
+tools/multi-agent-protocol/templates/command.md
+tools/multi-agent-protocol/templates/handover.md
+tools/multi-agent-protocol/templates/heads-up.md
+tools/multi-agent-protocol/templates/joined.md
+tools/multi-agent-protocol/templates/release-request.md
+tools/multi-agent-protocol/templates/released.md
+tools/multi-agent-protocol/templates/returned.md
+tools/multi-agent-protocol/templates/review-packet.md
+tools/multi-agent-protocol/templates/review.md
+tools/multi-agent-protocol/templates/status.md
+tools/multi-agent-protocol/templates/transfer.md</pre></details>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:47:10</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">status</span> status: building</div>
+    
+    <div class='note'>plan the decay fit</div>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:47:10</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> handover to data</div>
+    <div class="meta">20261029T034710Z_lead_handover.md</div>
+    <details><summary>show</summary><pre>## Goal
+Load every measurement run in data/sample into arrays t_s, signal and sigma, dropping rows
+with missing values, so that line fit can fit decay times.
+
+## Current state
+- Branch: main (pushed: yes)
+- Code changed so far: none
+
+## Confirmed facts
+- Each CSV file in data/sample has the header t_s,signal,sigma; some rows have an empty signal
+
+## Suggested approach
+- src/decay_fit/load.py: load_run(path) -&gt; Run, load_runs(directory) -&gt; list[Run]
+
+## Blockers and decisions needed
+- none
+
+## Done means
+- Tests: tests/test_load.py covers missing values, sorting, a missing column, sigma &lt;= 0
+- Docs: docstrings
+- Report back with: branch, SHA, checks run and results; hand the loader to fit</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:47:11</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> handover to fit</div>
+    <div class="meta">20261029T034711Z_lead_handover.md</div>
+    <details><summary>show</summary><pre>## Goal
+Fit a decay time with its uncertainty for every run, on top of line data&#x27;s loader.
+
+## Current state
+- Branch: none yet; start from data&#x27;s branch when data hands over
+- Code changed so far: none
+
+## Confirmed facts
+- The sample runs are single exponential decays with known noise (scripts/make_sample_data.py)
+
+## Suggested approach
+- src/decay_fit/fit.py: fit_decay(run) with scipy curve_fit, absolute sigma; a small CLI
+
+## Blockers and decisions needed
+- Waits for data&#x27;s loader handover
+
+## Done means
+- Tests: tests/test_fit.py recovers the true decay times within three sigma
+- Report back with: branch, SHA, checks run and results; ask review, then release</pre></details>
+  </div>
+</li>
+<li class="event claim">
+  <div class="when">03:47:33</div>
+  <div class="what">
+    <div><span class="actor">data</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">claim</span> claims load-runs</div>
+    
+    
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:47:45</div>
+  <div class="what">
+    <div><span class="actor">data</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">status</span> status: building</div>
+    
+    <div class='note'>implement and hand over measurement loaders</div>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:47:45</div>
+  <div class="what">
+    <div><span class="actor">data</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">message</span> heads-up to all</div>
+    <div class="meta">20261029T034745Z_data_heads-up.md</div>
+    <details><summary>show</summary><pre>- Change: line data joined to implement CSV loaders.
+- Role and area: line; src/decay_fit/load.py, tests/test_load.py.
+- Environment: see status/data.md.
+- Compatibility: additive API; no existing callers change.
+- Interface: Run(name, t_s, signal, sigma); load_run(path) -&gt; Run; load_runs(directory) -&gt; list[Run]. Arrays are finite float arrays sorted by time; missing rows are dropped and nonpositive sigma is rejected. Run.name is the CSV filename stem. Runs are sorted by filename.
+- What others must do: fit can use this contract after the pushed handover; lead owns shared contracts.</pre></details>
+  </div>
+</li>
+<li class="event commit">
+  <div class="when">03:48:20</div>
+  <div class="what">
+    <div><span class="actor">data</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">commit</span> feat: load and validate measurement runs</div>
+    <div class="meta">17ff600 · data/load-runs, fit/decay-fit, main</div>
+    <details><summary>show</summary><pre>
+src/decay_fit/load.py
+tests/test_load.py</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:48:34</div>
+  <div class="what">
+    <div><span class="actor">data</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">message</span> handover to fit,lead</div>
+    <div class="meta">20261029T034834Z_data_handover.md</div>
+    <details><summary>show</summary><pre>## Goal
+Use the completed measurement loader to implement decay fitting on the fit line.
+
+## Current state
+- Branch: data/load-runs at 17ff60026be41ce455f81059782d79a9de453614 (pushed: yes)
+- Code changed so far: src/decay_fit/load.py and tests/test_load.py; docstrings included.
+
+## Confirmed facts
+- load_run(path) returns Run(name, t_s, signal, sigma); name is the filename stem and arrays are float64, aligned and stably sorted by time.
+- load_runs(directory) loads immediate *.csv files in filename order.
+- Blank and NaN rows are dropped; missing columns, invalid numbers, infinities and nonpositive retained sigma raise ValueError. Empty retained runs have empty arrays; the fitter must decide whether enough points remain.
+- uv run --locked pytest -q: 10 passed. git diff --check: passed.
+- Sample runs load with finite arrays, positive sigma and increasing time.
+
+## Suggested approach
+- Fetch origin and merge origin/data/load-runs into your own fit branch; import load_runs from decay_fit.load.
+- Implement fitting and CLI in your declared area and arrange independent review through lead.
+
+## Blockers and decisions needed
+- None. No fitting or CLI code changed, no main update, no independent review performed, no dependencies added, no source data modified. No failed implementation approaches.
+
+## Done means
+- Tests: run uv run --locked pytest -q after fitting changes.
+- Docs: document fitting assumptions and result uncertainties.
+- Report back with: branch, exact pushed SHA, checks and results, remaining limits.</pre></details>
+  </div>
+</li>
+<li class="event claim">
+  <div class="when">03:48:35</div>
+  <div class="what">
+    <div><span class="actor">data</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">claim</span> releases load-runs</div>
+    
+    
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:48:36</div>
+  <div class="what">
+    <div><span class="actor">data</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">status</span> status: idle</div>
+    
+    <div class='note'>loader handed over to fit at 17ff60026be41ce455f81059782d79a9de453614</div>
+  </div>
+</li>
+<li class="event claim">
+  <div class="when">03:49:01</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">claim</span> claims decay-fit</div>
+    
+    
+  </div>
+</li>
+<li class="event commit">
+  <div class="when">03:49:47</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">commit</span> feat: fit decay times with absolute-sigma uncertainties</div>
+    <div class="meta">5cc4b28 · fit/decay-fit, main</div>
+    <details><summary>show</summary><pre>
+src/decay_fit/cli.py
+src/decay_fit/fit.py
+tests/test_fit.py</pre></details>
+  </div>
+</li>
+<li class="event commit">
+  <div class="when">03:50:21</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">commit</span> fix: report load errors and empty directories in the cli</div>
+    <div class="meta">81e2dfa · fit/decay-fit, main</div>
+    <details><summary>show</summary><pre>
+src/decay_fit/cli.py
+tests/test_fit.py</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:50:35</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> heads-up to all</div>
+    <div class="meta">20261029T035035Z_fit_heads-up.md</div>
+    <details><summary>show</summary><pre>- Change: line fit joined
+- Role and area: line; src/decay_fit/fit.py, src/decay_fit/cli.py, tests/test_fit.py
+- Environment: see status/fit.md (agent, model, machine label, sandbox and network, what it can and cannot run, how to reach it, how a message wakes it, whether it pushes the coordination branch, whether the owner is present, the git identity it commits under)
+- What others must do: nothing</pre></details>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:50:35</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">status</span> status: in review: fit/decay-fit at 81e2dfad4fa6c3912177639f55a870636f401494</div>
+    
+    <div class='note'>decay-fit: fit_decay and CLI (messages/20261029T034711Z_lead_handover.md, messages/20261029T034834Z_data_handover.md)</div>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:50:35</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> question to lead</div>
+    <div class="meta">20261029T035035Z_fit_question.md</div>
+    <details><summary>show</summary><pre>Please arrange an independent review of fit/decay-fit at
+81e2dfad4fa6c3912177639f55a870636f401494 (pushed; two commits on top of data&#x27;s
+17ff60026be41ce455f81059782d79a9de453614).
+
+- Changes: src/decay_fit/fit.py (DecayFit, decay_model, fit_decay(run): scipy curve_fit with
+  absolute_sigma=True; ValueError for fewer than 3 points, non-convergence, or a non-finite /
+  nonpositive tau or covariance), src/decay_fit/cli.py (`decay-fit &lt;dir&gt;` prints tau, amplitude,
+  their errors and chi2/dof; exit 1 with a stderr message on load errors, no runs, or a failed fit),
+  tests/test_fit.py (7 tests).
+- Checks: `uv run --locked pytest -q`: 17 passed. `git diff --check`: clean.
+  `uv run --locked decay-fit data/sample`: tau_s = 2.048 +- 0.039, 3.535 +- 0.066, 5.080 +- 0.054
+  (true 2.0, 3.5, 5.0; all within 3 sigma; chi2/dof 0.99, 1.15, 1.06).
+- Limits: single exponential with no baseline offset; uncertainties assume the sigma column is the
+  true absolute noise (not rescaled by chi2). README not changed (outside my area); the fit
+  assumptions are in the fit.py module docstring.
+- Not requesting a release yet.</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:51:18</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> handover to review</div>
+    <div class="meta">20261029T035118Z_lead_handover.md</div>
+    <details><summary>show</summary><pre>## Goal
+Independently review fit/decay-fit at 81e2dfad4fa6c3912177639f55a870636f401494 and report whether it is ready for a release request. Change nothing.
+
+## Current state
+- Branch: fit/decay-fit at 81e2dfad4fa6c3912177639f55a870636f401494 (pushed: yes; verified by lead with git fetch + git rev-parse origin/fit/decay-fit)
+- Code changed so far: on top of main 6b4531b: 17ff600 (data: src/decay_fit/load.py, tests/test_load.py), 5cc4b28 and 81e2dfa (fit: src/decay_fit/fit.py, src/decay_fit/cli.py, tests/test_fit.py)
+
+## Confirmed facts
+- fit reports: `uv run --locked pytest -q` 17 passed; `git diff --check` clean; `uv run --locked decay-fit data/sample` gives tau_s 2.048 +- 0.039, 3.535 +- 0.066, 5.080 +- 0.054 (true 2.0, 3.5, 5.0), chi2/dof 0.99, 1.15, 1.06. Lead has not re-run these.
+- Stated limits: single exponential without baseline offset; uncertainties use absolute_sigma=True (sigma column taken as true noise, not rescaled by chi2).
+
+## Suggested approach
+- Check out the exact SHA detached in your own worktree; review `git diff 6b4531b..81e2dfa`.
+- Correctness: decay_model and fit_decay (initial guess, curve_fit with absolute_sigma=True, error handling for &lt;3 points, non-convergence, non-finite or nonpositive tau/covariance); that fit uses the data contract Run(name, t_s, signal, sigma) from load.py as announced in messages/20261029T034745Z_data_heads-up.md.
+- CLI: output format, exit 1 with stderr message on load errors, empty directory, failed fit.
+- Tests: coverage of the error paths and of the loader rules (dropped NaN/blank rows, ValueError cases).
+- Re-run `uv run --locked pytest -q` and `uv run --locked decay-fit data/sample` and compare with the numbers above.
+- Docs: fit assumptions and uncertainty meaning documented (fit.py module docstring).
+
+## Blockers and decisions needed
+- None. You review only; do not commit, push branches or edit code.
+
+## Done means
+- Tests: report the exact commands you ran and their results.
+- Docs: none to change.
+- Report back with: a `review` (or `answer` if unavailable) message to fit and lead naming branch fit/decay-fit and SHA 81e2dfad4fa6c3912177639f55a870636f401494, a verdict (approve / changes requested), findings with file:line and severity, checks run and results, limits of the review.</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:51:18</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> answer to fit</div>
+    <div class="meta">20261029T035118Z_lead_answer.md</div>
+    <details><summary>show</summary><pre>Review requested: lead sent a handover to line review for fit/decay-fit at
+81e2dfad4fa6c3912177639f55a870636f401494 (verified pushed). The reviewer will report the
+verdict and findings to fit and lead. Do not push new commits to that branch for this
+review; if you must change something, tell lead so the review can be re-pointed at the new SHA.</pre></details>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:51:39</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">status</span> status: waiting: review verdict on fit/decay-fit 81e2dfa</div>
+    
+    <div class='note'>coordinate decay fit; independent review of fit/decay-fit at 81e2dfad4fa6c3912177639f55a870636f401494 requested from review (messages/20261029T035118Z_lead_handover.md)</div>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:52:15</div>
+  <div class="what">
+    <div><span class="actor">review</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">status</span> status: in review</div>
+    
+    <div class='note'>independent review of fit/decay-fit</div>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:52:15</div>
+  <div class="what">
+    <div><span class="actor">review</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">message</span> heads-up to all</div>
+    <div class="meta">20261029T035215Z_review_heads-up.md</div>
+    <details><summary>show</summary><pre>- Change: line review joined for independent review of fit/decay-fit at 81e2dfad4fa6c3912177639f55a870636f401494.
+- Role and area: line, review only; no code changes.
+- Environment: see status/review.md.
+- What others must do: nothing.</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:53:04</div>
+  <div class="what">
+    <div><span class="actor">review</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">message</span> review to lead, fit</div>
+    <div class="meta">20261029T035304Z_review_review.md</div>
+    <details><summary>show</summary><pre>Reviewed: fit/decay-fit at 81e2dfad4fa6c3912177639f55a870636f401494
+Earlier findings: none
+
+Verdict: changes requested. The reviewed commit is pushed (fetched from origin/fit/decay-fit). No code changed or development branch pushed.
+
+## P1 (blocks release)
+- None found.
+
+## P2 (fix before release)
+- src/decay_fit/fit.py:43-48 initializes amplitude to the first observed signal, although the model defines amplitude at time zero. Valid runs whose first time is well above zero can consequently fail even with an exact exponential and a correct initial tau. Expected: fit valid nonzero-origin times or explicitly document and validate a zero-origin restriction. Evidence: `uv run --locked python -c &#x27;import numpy as np; from decay_fit.load import Run; from decay_fit.fit import fit_decay; times=np.arange(100.,111.); print(fit_decay(Run(&quot;shifted&quot;, times, np.exp(-(times-100.)/2.), np.full(times.size,.01))))&#x27;` raises `ValueError: shifted: fit gave no finite, positive decay time` with an OptimizeWarning. The exact model has tau=2 and amplitude=exp(50). Consider fitting relative times internally and transforming amplitude and its covariance back to the documented origin.
+
+## P3 (fix when convenient)
+- tests/test_fit.py lacks regression coverage for optimizer non-convergence, rejected covariance and repeated-time inputs. Existing error tests cover only too few points and directory errors. Add focused cases when addressing fit robustness; an all-zero time array currently raises a raw LinAlgError from initial_guess (CLI does convert it to exit 1).
+
+## Looked good
+- Read the complete implementation and test diff from 6b4531b, plus README and pyproject.toml. Loader preserves source files, drops blank/NaN rows, rejects invalid retained values, and sorts stably. Absolute-sigma uncertainty semantics are documented and tested.
+- `uv run --locked pytest -q`: 17 passed.
+- `uv run --locked decay-fit data/sample`: exit 0; tau/error 2.0482/0.0394, 3.5354/0.0662, 5.0804/0.0538; chi2/dof 0.985, 1.148, 1.062, matching handover.
+- `git diff --check 6b4531b..81e2dfa`: clean.
+- Additional in-memory probes exercised repeated times, negative signals, shifted times and CLI error conversion; no source files changed.
+
+## Only simulated or not checked
+- Synthetic sample and in-memory data only; no real measurement data, CI, release integration or deployment checked. Did not force every optimizer/covariance failure mode. Initial checkout failed because the commit was not fetched; git fetch origin resolved it.
+- Next step: fit fixes the nonzero-time initialization and adds a regression test, then requests re-review of the new SHA. No owner decision needed for this review.</pre></details>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:53:07</div>
+  <div class="what">
+    <div><span class="actor">review</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">status</span> status: idle; changes requested, review sent to lead and fit</div>
+    
+    <div class='note'>independent review of fit/decay-fit</div>
+  </div>
+</li>
+<li class="event commit">
+  <div class="when">03:53:56</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">commit</span> fix: fit decay on times relative to the first point</div>
+    <div class="meta">c133fba · fit/decay-fit, main</div>
+    <details><summary>show</summary><pre>
+src/decay_fit/fit.py
+tests/test_fit.py</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:54:11</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> question to lead</div>
+    <div class="meta">20261029T035411Z_fit_question.md</div>
+    <details><summary>show</summary><pre>Please re-point the review of fit/decay-fit at the new SHA
+c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (pushed to origin/fit/decay-fit; one commit on top
+of the reviewed 81e2dfa).
+
+Addressed:
+- P2: fit_decay now fits on times relative to the first point and transforms the amplitude
+  and its covariance back to t_s = 0 (Jacobian propagation); a non-finite amplitude at
+  t_s = 0 raises ValueError. The reviewer&#x27;s probe (times 100..110, tau 2) now gives
+  tau = 2, amplitude = exp(50). Regression tests:
+  test_run_starting_late_is_fit_with_amplitude_at_time_zero,
+  test_shifted_run_has_same_tau_and_propagated_amplitude_error.
+- P3 (partly): initial_guess no longer calls polyfit with fewer than two distinct times, so
+  all-identical times raise ValueError instead of LinAlgError
+  (test_identical_times_raise_value_error). Non-convergence and rejected-covariance tests
+  are not added yet.
+
+Checks run at c133fba:
+- `uv run --locked pytest -q`: 20 passed (1 expected OptimizeWarning in the identical-times test).
+- `uv run --locked decay-fit data/sample`: exit 0; tau/error and chi2/dof unchanged
+  (2.0482/0.0394, 3.5354/0.0662, 5.0804/0.0538; 0.985, 1.148, 1.062).
+
+Interface: initial_guess(run) became initial_guess(t_s, signal); it has no callers outside
+fit.py. DecayFit fields and fit_decay signature are unchanged.</pre></details>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:54:24</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">status</span> status: P2 from review fixed; re-review requested (messages/20261029T035411Z_fit_question.md) for fit/decay-fit at c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05</div>
+    
+    <div class='note'>decay-fit: fit_decay and CLI (messages/20261029T034711Z_lead_handover.md, messages/20261029T034834Z_data_handover.md)</div>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:54:58</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> handover to review</div>
+    <div class="meta">20261029T035458Z_lead_handover.md</div>
+    <details><summary>show</summary><pre>## Goal
+Re-review fit/decay-fit at c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (one commit on top of
+the reviewed 81e2dfa) and give a verdict.
+
+## Current state
+- Branch: fit/decay-fit at c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (pushed: yes; `git fetch origin` first)
+- Code changed so far: src/decay_fit/fit.py, tests/test_fit.py (per fit&#x27;s message)
+
+## Confirmed facts
+- origin/fit/decay-fit resolves to c133fba (lead ran git fetch and git rev-parse).
+- fit reports: `uv run --locked pytest -q` 20 passed (1 expected OptimizeWarning);
+  `uv run --locked decay-fit data/sample` exit 0, results unchanged. Not re-run by lead.
+
+## Suggested approach
+- Diff 81e2dfa..c133fba and check:
+  1. P2: fit on times relative to the first point, amplitude and its covariance transformed
+     back to t_s = 0 (Jacobian propagation is correct; non-finite amplitude raises ValueError).
+     Re-run your shifted-times probe (times 100..110, tau 2): expect tau = 2, amplitude = exp(50).
+  2. P3 (partial): identical times now raise ValueError, not LinAlgError. Non-convergence and
+     rejected-covariance tests are still missing; say whether that blocks release.
+  3. Interface: initial_guess(run) -&gt; initial_guess(t_s, signal); confirm no callers outside
+     fit.py. DecayFit fields and fit_decay signature claimed unchanged.
+- Run `uv run --locked pytest -q`, `uv run --locked decay-fit data/sample`, and
+  `git diff --check 81e2dfa..c133fba`.
+
+## Blockers and decisions needed
+- None. No owner decision needed.
+
+## Done means
+- Tests: the checks above; change no code and push no development branch.
+- Docs: none.
+- Report back with: a `review` message to lead and fit naming fit/decay-fit at the full SHA,
+  P1/P2/P3 findings, what looked good, what was only simulated or not checked, and the verdict.</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:54:58</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> answer to fit</div>
+    <div class="meta">20261029T035458Z_lead_answer.md</div>
+    <details><summary>show</summary><pre>Re-review requested: handover sent to line review for fit/decay-fit at
+c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (P2 fix, partial P3, initial_guess signature).
+The verdict will come as a `review` message to lead and fit. Until then, keep the branch at
+that SHA, or tell lead if you push more so the review can be re-pointed.</pre></details>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:55:10</div>
+  <div class="what">
+    <div><span class="actor">lead</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">status</span> status: waiting: review verdict on fit/decay-fit c133fba</div>
+    
+    <div class='note'>coordinate decay fit; re-review of fit/decay-fit at c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 requested from review (messages/20261029T035458Z_lead_handover.md)</div>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:55:47</div>
+  <div class="what">
+    <div><span class="actor">review</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">status</span> status: reviewing</div>
+    
+    <div class='note'>independent re-review of fit/decay-fit</div>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:56:15</div>
+  <div class="what">
+    <div><span class="actor">review</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">message</span> review to lead, fit</div>
+    <div class="meta">20261029T035615Z_review_review.md</div>
+    <details><summary>show</summary><pre>Reviewed: fit/decay-fit at c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05
+Earlier findings: P2 resolved; P3 partially resolved (identical times covered), remaining test coverage is a follow-up.
+
+Verdict: approve for release request. Exact commit fetched and checked out detached; pushed on origin/fit/decay-fit. No code changed, commits created or development branches pushed.
+
+## P1 (blocks release)
+- None found.
+
+## P2 (fix before release)
+- None open. Earlier shifted-time failure resolved: in-memory times 100..110 with tau=2 now return tau=2, amplitude=5.184705528587072e21 (exp(50)), chi2=0.
+
+## P3 (fix when convenient)
+- Earlier coverage finding partially open: tests/test_fit.py still lacks forced non-convergence and rejected-covariance regression tests. Expected: preserve ValueError conversion with focused tests. Evidence: inspected tests and manually patched curve_fit to raise RuntimeError or return infinite covariance; both correctly raised named ValueError. Follow-up only; does not block this re-check.
+
+## Looked good
+- Read 81e2dfa..c133fba and complete fit.py plus CLI. Relative-time residuals and amplitude Jacobian are correct, including the negative tau derivative. Independent injected covariance probe matched the propagated errors.
+- git grep -n initial_guess c133fba found only its definition and internal call; DecayFit and fit_decay signatures unchanged.
+- uv run --locked pytest -q: 20 passed, one expected OptimizeWarning for identical times.
+- uv run --locked decay-fit data/sample: exit 0; tau/error 2.0482/0.0394, 3.5354/0.0662, 5.0804/0.0538; chi2/dof 0.985, 1.148, 1.062, unchanged.
+- git diff --check 81e2dfa..c133fba: clean.
+- Additional uv run --locked python -c probes: exact shifted exponential, injected covariance propagation, forced non-convergence and infinite covariance all passed.
+
+## Only simulated or not checked
+- Synthetic samples and in-memory probes only; injected failures simulate optimizer outcomes. No real measurements, CI, release integration or deployment checked. Did not repeat the full previous loader review or exhaust numerical extremes.
+- Next step: fit sends release request for this exact SHA; release runs its gate. No owner decision needed for this review.</pre></details>
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:56:19</div>
+  <div class="what">
+    <div><span class="actor">review</span>
+      <span class="tool">Codex; version unknown</span>
+      <span class="kind">status</span> status: idle; approved c133fba for release request; review sent to lead and fit</div>
+    
+    <div class='note'>independent re-review of fit/decay-fit</div>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:57:15</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> release request to release</div>
+    <div class="meta">20261029T035715Z_fit_release-request.md</div>
+    <details><summary>show</summary><pre>- Branch: fit/decay-fit
+- Commit: c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (merged with main at 6b4531b4487a061ad81ff230d47c8e145aba3e26: yes, origin/main is an ancestor; fast-forward possible)
+- Migrations: none
+- Configuration, secrets or scheduled-job changes: none
+- Reviews: messages/20261029T035615Z_review_review.md (line review) reviewed c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05: approve for release request, no P1/P2; one P3 follow-up (forced non-convergence and rejected-covariance regression tests). Earlier review messages/20261029T035304Z_review_review.md had a P2, now resolved.
+- Owner approvals: none needed (no PROTOCOL.md 3.2 action; no release tag requested)
+- What it changes: measurement loader and validation (17ff600, from the data line&#x27;s handover), fit_decay with absolute-sigma uncertainties (5cc4b28), CLI reporting of load errors and empty directories (81e2dfa), fit on times relative to the first point (c133fba)
+- Interfaces changed: none beyond the new fit_decay/DecayFit and decay-fit CLI introduced by this branch, as specified in messages/20261029T034711Z_lead_handover.md; the internal initial_guess is unused elsewhere
+- Checks run: `uv run --locked pytest -q` at c133fba in this session: 20 passed, 1 expected OptimizeWarning (identical times); local HEAD equals origin/fit/decay-fit
+- Known limits: synthetic sample data and in-memory probes only; no real measurements checked; P3 test coverage follow-up open</pre></details>
+  </div>
+</li>
+<li class="event claim">
+  <div class="when">03:57:19</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">claim</span> releases decay-fit</div>
+    
+    
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:57:21</div>
+  <div class="what">
+    <div><span class="actor">fit</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">status</span> status: review approved c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (messages/20261029T035615Z_review_review.md); release-request sent to release; claim decay-fit released; P3 test follow-up open</div>
+    
+    <div class='note'>decay-fit: fit_decay and CLI (messages/20261029T034711Z_lead_handover.md, messages/20261029T034834Z_data_handover.md)</div>
+  </div>
+</li>
+<li class="event claim">
+  <div class="when">03:57:41</div>
+  <div class="what">
+    <div><span class="actor">release</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">claim</span> claims release-main</div>
+    
+    
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:58:06</div>
+  <div class="what">
+    <div><span class="actor">release</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> released to fit, lead</div>
+    <div class="meta">20261029T035806Z_release_released.md</div>
+    <details><summary>show</summary><pre>- Production: none (library and CLI; no deployment)
+- Main branch: c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (fast-forward from 6b4531b4487a061ad81ff230d47c8e145aba3e26)
+- Went live: CSV loader and validation (17ff600), fit_decay with absolute-sigma uncertainties (5cc4b28), CLI reporting of load errors and empty directories (81e2dfa), fit on times relative to the first point (c133fba)
+- Migrations: none
+- Checks: gate `uv run --locked pytest -q` on detached c133fba: 20 passed, 1 expected OptimizeWarning; origin/fit/decay-fit was at the named SHA; review messages/20261029T035615Z_review_review.md covers c133fba with no P1/P2; end-to-end, CI and smoke check: not run (none defined)
+- Backup: previous main 6b4531b4487a061ad81ff230d47c8e145aba3e26 is in history
+- Rollback: needs the owner (rewrites pushed main); otherwise revert on a branch and release again
+- Follow-ups for the requester: P3 follow-up (forced non-convergence and rejected-covariance tests) remains open; merge main before the next branch. Release tag v0.1.0 was NOT created: AGENTS.md requires the owner&#x27;s approval for a release tag and the owner was not present; it waits for the owner (question sent to the lead).</pre></details>
+  </div>
+</li>
+<li class="event message">
+  <div class="when">03:58:07</div>
+  <div class="what">
+    <div><span class="actor">release</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">message</span> question to lead</div>
+    <div class="meta">20261029T035807Z_release_question.md</div>
+    <details><summary>show</summary><pre>main is now at c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (gate: `uv run --locked pytest -q`, 20 passed).
+May release create the tag v0.1.0 on c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05? AGENTS.md lists creating a
+release tag as an action that needs the owner&#x27;s approval, and the owner was not in this session.
+Please ask the owner and record the decision (decide.sh); release will tag only after that.</pre></details>
+  </div>
+</li>
+<li class="event claim">
+  <div class="when">03:58:10</div>
+  <div class="what">
+    <div><span class="actor">release</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">claim</span> releases release-main</div>
+    
+    
+  </div>
+</li>
+<li class="event status">
+  <div class="when">03:58:21</div>
+  <div class="what">
+    <div><span class="actor">release</span>
+      <span class="tool">Claude Code; version unknown</span>
+      <span class="kind">status</span> status: released; main fast-forwarded to c133fbaf6e2abcc977e9bbd0c40eeb75950f8a05 (messages/20261029T035806Z_release_released.md); claim release-main released; tag v0.1.0 waits for the owner (messages/20261029T035807Z_release_question.md)</div>
+    
+    <div class='note'>release fit/decay-fit (messages/20261029T035715Z_fit_release-request.md)</div>
+  </div>
+</li></ol>
+</body></html>

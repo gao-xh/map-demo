@@ -62,6 +62,15 @@ and no network), so run it only in a throwaway
 directory. Each agent's output is kept in `<work>/logs/`. The release session does not tag:
 the tag waits for the owner, as `AGENTS.md` says.
 
+### A real run
+
+[`docs/runs/2026-10-29-real-agents.html`](docs/runs/2026-10-29-real-agents.html) is the
+timeline of one real run (about 11 minutes, no human input; download it and open it in a
+browser). Codex, as the reviewer, found that Claude Code's fit failed when the time axis
+did not start at zero (P2); Claude Code fixed it, Codex approved the new commit, and the
+release session fast-forwarded `main` and stopped before the tag, which waits for the
+owner.
+
 ### A timeline of a run
 
 ```sh
