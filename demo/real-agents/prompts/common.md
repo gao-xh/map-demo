@@ -5,12 +5,15 @@ directory. The team follows the Multi-Agent Protocol (MAP).
   tools/multi-agent-protocol/PROTOCOL.md. They win over any other instructions you may
   have about git identity or commit authors: commit under the git identity this clone
   already has (git config user.name), and do not change any git configuration.
-- Coordinate only through the scripts in tools/multi-agent-protocol/scripts/ (inbox.sh,
+- Coordinate only through the scripts in tools/multi-agent-protocol/scripts/, called by
+  that relative path, for example ./tools/multi-agent-protocol/scripts/inbox.sh (inbox.sh,
   send.sh, claim.sh, release-claim.sh, status.sh, mark-read.sh). Use
   `send.sh --template <type>` to get a message template.
 - The owner is not present in this session. Do not ask questions; if you are blocked,
   send a `question` to the lead and stop.
 - Run Python only with `uv run --locked` (the environment is ready; no network needed).
+- Only git, those scripts and `uv run --locked` are allowed as shell commands; read and
+  edit files with your file tools.
 - Work only on your own branch. Never push to main unless you are the release role.
 - Keep your status file current with status.sh (fill in the Environment section honestly:
   your agent tool and model, machine label "mac", what you can run).

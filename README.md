@@ -56,8 +56,9 @@ demo/real-agents/run.sh        # needs claude and codex, logged in; uses model c
 ```
 
 Every run differs, takes tens of minutes, and spends model usage. The agents run with
-their tools allowed inside the work directory (Claude Code: `acceptEdits` with Bash; Codex:
-`workspace-write` with the clone's `.git` writable), so run it only in a throwaway
+their tools allowed inside the work directory (Claude Code: file tools plus only `git`, the MAP
+scripts and `uv run --locked`; Codex: `workspace-write` with the clone's `.git` writable
+and no network), so run it only in a throwaway
 directory. Each agent's output is kept in `<work>/logs/`. The release session does not tag:
 the tag waits for the owner, as `AGENTS.md` says.
 

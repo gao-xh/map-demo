@@ -34,8 +34,12 @@ agent() {  # agent <claude|codex> <clone> <prompt file>: one unattended session
     printf '\n\033[1m== %d. %s in %s/ (%s)\033[0m\n' "$turn" "$1" "$2" "$3"
     cd "$work/$2"
     case $1 in
-        claude) "$CLAUDE" -p "$prompt" --permission-mode acceptEdits \
-                    --allowedTools "Bash,Read,Edit,Write,Glob,Grep" > "$log" 2>&1 ;;
+        # Only the commands the protocol needs: git, the MAP scripts and the tests.
+        # Tools not listed here are refused in -p mode, so nothing else can run.
+        claude) "$CLAUDE" -p "$prompt" --permission-mode default \
+                    --allowedTools "Read" "Edit" "Write" "Glob" "Grep" \
+                    "Bash(git *)" "Bash(./tools/multi-agent-protocol/scripts/*)" \
+                    "Bash(uv run --locked *)" > "$log" 2>&1 ;;
         # workspace-write keeps .git read-only; make this clone's .git writable
         # (adapters/codex.md in MAP). The remote is a local directory, so no network.
         codex) "$CODEX" exec -C "$work/$2" -s workspace-write --add-dir "$work" \
